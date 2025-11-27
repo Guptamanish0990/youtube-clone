@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import SearchClient from './SearchClient';
 
-// Prevent static generation
 export const dynamic = 'force-dynamic';
 
 export default function SearchPage() {
