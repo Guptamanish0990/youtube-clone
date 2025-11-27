@@ -1,11 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { searchVideos } from "@/lib/youtube";
 import Link from "next/link";
 
-export default function SearchClient() {
+function SearchResults() {
   const params = useSearchParams();
   const query = params.get("q")?.trim() || "";
 
@@ -13,7 +13,10 @@ export default function SearchClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!query) return;
+    if (!query) {
+      setLoading(false);
+      return;
+    }
     
     async function load() {
       setLoading(true);
@@ -36,11 +39,19 @@ export default function SearchClient() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {results.map((v) => (
           <Link key={v.id} href={`/video/${v.id}`}>
-            <img src={v.thumbnail} className="rounded" />
+            <img src={v.thumbnail} alt={v.title} className="rounded" />
             <p className="text-sm mt-1">{v.title}</p>
           </Link>
         ))}
       </div>
     </div>
+  );
+}
+
+export default function SearchClient() {
+  return (
+    <Suspense fallback={<div className="p-6 text-white">Loading search...</div>}>
+      <SearchResults />
+    </Suspense>
   );
 }
