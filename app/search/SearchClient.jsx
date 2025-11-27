@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState } from "react";
 import { searchVideos } from "@/lib/youtube";
 import Link from "next/link";
 
@@ -50,8 +50,6 @@ function SearchResults() {
 
 export default function SearchClient() {
   return (
-    <Suspense fallback={<div className="p-6 text-white">Loading search...</div>}>
-      <SearchResults />
-    </Suspense>
+    <SearchResults />
   );
 }
